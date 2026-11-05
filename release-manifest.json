@@ -1,7 +1,7 @@
 {
   "name": "dsh-stellar-effort",
   "version": "1.1.5",
-  "generated": "2026-11-05T09:56:09.877Z",
+  "generated": "2026-11-05T10:05:57.047Z",
   "files": [
     {
       "path": "ASSETS_CREDITS.md",
@@ -35,8 +35,8 @@
     },
     {
       "path": "package.json",
-      "bytes": 1662,
-      "sha256": "bb478f82fd69c31b69bdcff2699c4a03572c994113e131deb775dc04c4591b6a"
+      "bytes": 1948,
+      "sha256": "8914755b128f180afa47bc3863475ebe5e24c93cbc755a09d82b408ff2753acd"
     },
     {
       "path": "README.md",

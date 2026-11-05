@@ -11,6 +11,14 @@
     "black-hole"
   ],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wangtheme-coder/dsh-stellar-effort.git"
+  },
+  "homepage": "https://github.com/wangtheme-coder/dsh-stellar-effort#readme",
+  "bugs": {
+    "url": "https://github.com/wangtheme-coder/dsh-stellar-effort/issues"
+  },
   "type": "module",
   "main": "./src/host.mjs",
   "exports": {
