@@ -1,0 +1,10 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {readFileSync} from 'node:fs';
+import {TEMPLATE_OBJECTS,TEMPLATE_KINDS,TEMPLATE_ATLAS,TEMPLATE_CLEAR,TEMPLATE_STRIP,TEMPLATE_STRIDE,templateSprites,templateBakeVertices,TEMPLATE_BAKE} from '../src/render/templates.mjs';
+import {SPACE} from '../src/render/space.mjs';
+test('template atlas: 128 different objects of all ten kinds, each in its own padded tile, none over the rail',()=>{assert.equal(TEMPLATE_OBJECTS.length,128);assert.deepEqual(new Set(TEMPLATE_OBJECTS.map(o=>o.kind)),new Set(TEMPLATE_KINDS));assert.equal(new Set(TEMPLATE_OBJECTS.map(o=>o.a.join())).size,128,'no two alike');
+  const tiles=new Set();for(const o of TEMPLATE_OBJECTS){const[l,t,r,b]=o.rect;assert.ok(l>=0&&t>=0&&r<=TEMPLATE_ATLAS.width&&b<=TEMPLATE_ATLAS.height);tiles.add(`${Math.floor(l/64)},${Math.floor(t/64)}`);assert.ok(Math.abs(o.y-SPACE.centerY)>=TEMPLATE_CLEAR&&o.y>0&&o.y<SPACE.height);assert.ok(o.size>=4&&o.size<=26);assert.ok(o.uv.every(v=>v>=0&&v<=1));}
+  assert.equal(tiles.size,128);assert.ok(TEMPLATE_OBJECTS.filter(o=>o.size<9).length>TEMPLATE_OBJECTS.length/2,'mostly small and far');
+  assert.equal(templateBakeVertices().length,128*6*TEMPLATE_STRIDE);for(let k=0;k<TEMPLATE_KINDS.length-1;k++)assert.match(TEMPLATE_BAKE,new RegExp(`k==${k}`));});
+test('template sprites drift with the voyage and wrap around the strip; a handful are in view at a time',()=>{const counts=[];for(let d=0;d<TEMPLATE_STRIP*4;d+=397)counts.push(templateSprites(d,123).length);assert.ok(Math.min(...counts)>=6&&Math.max(...counts)<=40,counts.join());
+  const a=templateSprites(1000,0),b=templateSprites(1010,0);const moved=a.map(s=>b.find(t=>t.uv===s.uv)).filter(Boolean);assert.ok(moved.length>3);for(const s of moved){const o=a.find(t=>t.uv===s.uv);assert.ok(o.x-s.x>1&&o.x-s.x<4,'slower than the near stars');}
+  const gl=readFileSync(new URL('../src/render/webgl.mjs',import.meta.url),'utf8');assert.ok(gl.indexOf('templateSprites(world')<gl.indexOf('photoSprites(world'),'far objects under the photos');});

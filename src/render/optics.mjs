@@ -1,0 +1,8 @@
+import {clamp} from '../shared/mapping.mjs';
+const profiles={hybrid:{saturation:1,gain:1,tint:[1,1,1],stars:1,halo:1,fog:1},realistic:{saturation:.85,gain:.90,tint:[1.05,1,.92],stars:.92,halo:.65,fog:.82},scifi:{saturation:.55,gain:1.16,tint:[.92,.98,1.10],stars:1.08,halo:1.12,fog:.9},minimal:{saturation:.08,gain:.72,tint:[1,1,1],stars:.72,halo:0,fog:.42}};
+export function opticalProfile(world,quantized=false){const out={saturation:0,gain:0,tint:[0,0,0],stars:0,halo:0,fog:0},weights=Object.entries(profiles).map(([id,p])=>[p,quantized?Math.round((world.styleMix?.[id]??(world.config.style===id?1:0))*16)/16:(world.styleMix?.[id]??(world.config.style===id?1:0))]),sum=weights.reduce((s,[,w])=>s+w,0)||1;for(const[p,raw]of weights){const w=raw/sum;for(const k of['saturation','gain','stars','halo','fog'])out[k]+=p[k]*w;for(let i=0;i<3;i++)out.tint[i]+=p.tint[i]*w;}return out;}
+export function opticalColor(rgb,p){if((p.saturation===1&&p.gain===1&&p.tint.every(v=>v===1))||Math.max(...rgb)<.002)return [...rgb];const lum=rgb[0]*.2126+rgb[1]*.7152+rgb[2]*.0722;return rgb.map((v,i)=>clamp((lum+(v-lum)*p.saturation)*p.gain*p.tint[i]));}
+export function softenMotion(dx,dy,world,reduced=false){if(!Number.isFinite(dx)||!Number.isFinite(dy)||reduced||world.config.reducedMotion||world.config.quality==='static')return {x:0,y:0};const speed=Number.isFinite(world.config.speed)?world.config.speed:0,blur=clamp(world.config.motionBlur??0),length=Math.hypot(dx,dy)*speed/60;if(length<.02||!blur)return {x:0,y:0};const factor=Math.min(.65,length*blur)/(Math.hypot(dx,dy)||1);return {x:dx*factor,y:dy*factor};}
+export function pointSamples(x,y,soft={x:0,y:0}){return Math.hypot(soft.x,soft.y)>.00001?[{x,y,weight:.65},{x:x-soft.x,y:y-soft.y,weight:.35}]:[{x,y,weight:1}];}
+
+

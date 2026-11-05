@@ -1,0 +1,1 @@
+export function triggerPreviewMeteor(world,{boundaryFixture=false}={}){if(world.meteors.length>=2)return null;const m=world.meteor();if(boundaryFixture)Object.assign(m,{x:.4,y:1.1,vx:.03,vy:1,age:0,life:3,points:[[.398,1.04],[.396,.98],[.394,.92]]});world.meteors.push(m);return m.id;}

@@ -1,0 +1,10 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {Universe} from '../src/render/universe.mjs';import {Evolution} from '../src/render/evolution.mjs';import {sampleHole} from '../src/render/hole.mjs';
+import {DEFAULTS} from '../src/shared/config.mjs';
+const quiet={...DEFAULTS,activity:0};
+const world=position=>{const w=new Universe({seed:2,config:quiet});w.evolution=new Evolution(position);w.evolution.suspend(position);return w;};
+test('the accretion disk grows from a thin ring past collapse to its full size at Max, easing over time',()=>{const sizes=[.7,.8,.9,1].map(p=>{const w=world(p);for(let i=0;i<600;i++)w.step(1/60,{position:p});return w.diskSize;});assert.ok(sizes[0]<.2,'thin newborn ring');for(let i=1;i<sizes.length;i++)assert.ok(sizes[i]>sizes[i-1]);assert.ok(Math.abs(sizes[3]-1)<.01);
+ const w=world(1);w.diskSize=.15;w.step(1/60,{position:1});assert.ok(w.diskSize<.2,'a fast drag still shows it grow');for(let i=0;i<120;i++)w.step(1/60,{position:1});assert.ok(w.diskSize>.85);});
+test('the disk image really extends further as it grows (not only brighter)',()=>{const reach=size=>{let far=0;for(let x=15;x<38;x+=.5){const a=sampleHole(-x,.0,{size,spin:.3})[3];if(a>.05)far=x;}return far;};assert.ok(reach(.15)+5<reach(1),`${reach(.15)} vs ${reach(1)}`);});
+test('spin follows disk size, speeds up in overdrive and slows back after release',()=>{const rate=(w,input)=>{const a=w.spinTime;w.step(1/60,input);return (w.spinTime-a)*60;};const small=world(.75),big=world(1);for(let i=0;i<600;i++){small.step(1/60,{position:.75});big.step(1/60,{position:1});}assert.ok(rate(small,{position:.75})<rate(big,{position:1}));
+ const base=rate(big,{position:1});for(let i=0;i<240;i++)big.step(1/60,{position:1,pressed:true,overdrive:1});const fast=rate(big,{position:1,pressed:true,overdrive:1});assert.ok(fast>base*2,`${fast} vs ${base}`);const rates=[];for(let i=0;i<480;i++)rates.push(rate(big,{position:1}));assert.ok(rates[30]>base*1.5,'slows gradually');assert.ok(Math.abs(rates.at(-1)-base)<base*.1,'back to Max speed');});

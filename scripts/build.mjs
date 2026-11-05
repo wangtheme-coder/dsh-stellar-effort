@@ -1,0 +1,11 @@
+import { build } from 'esbuild';
+import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
+import { dirname, resolve } from 'node:path';
+const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
+await mkdir(resolve(root,'dist'),{recursive:true});
+const result=await build({entryPoints:[resolve(root,'src/client.jsx')],bundle:true,write:false,format:'cjs',platform:'browser',target:['chrome110'],jsx:'transform',external:['react','react-dom','react-dom/client'],legalComments:'none'});
+const body=result.outputFiles[0].text;
+await writeFile(resolve(root,'dist/client.js'),`/* Stellar Effort 1.1.5 · original procedural renderer · MIT */\nwindow.__ModuleLoader__.load({id:"dsh-stellar-effort",factory:(require)=>{const module={exports:{}};const exports=module.exports;\n${body}\nreturn module.exports;}});\n`);
+await build({entryPoints:[resolve(root,'src/preview.jsx')],bundle:true,outfile:resolve(root,'dist/preview.js'),format:'esm',platform:'browser',target:['chrome110'],jsx:'transform',minify:true,define:{'process.env.NODE_ENV':'"production"'},legalComments:'none'});
+console.log(JSON.stringify({clientBytes:(await readFile(resolve(root,'dist/client.js'))).length,previewBytes:(await readFile(resolve(root,'dist/preview.js'))).length}));

@@ -1,0 +1,22 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Stellar Effort 世界与取景框调试 · 仅预览</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0d1016;color:#e5e9f2;font:14px/1.7 "Segoe UI","Microsoft YaHei",sans-serif}main{max-width:1320px;margin:auto;padding:30px 28px}h1{font-size:23px;font-weight:550;margin:0 0 6px}p{color:#9ea9bd;margin:4px 0 16px}
+.controls{display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin:12px 0}label{display:flex;gap:7px;align-items:center}button{background:#242c3c;color:#e5e9f2;border:1px solid #46536d;border-radius:6px;padding:6px 11px;cursor:pointer}button[aria-pressed="true"]{background:#3d3466;border-color:#8a7cc9}input{accent-color:#aaa1d1}output{font:12px Consolas,monospace;color:#becada;min-width:44px}
+.scroller{overflow:auto;border-radius:8px;border:1px solid #2a3243;background:#0b0e14;padding:24px}.zoom{transform-origin:0 0;width:max-content}
+/* A mock of the DSH popup the universe sits on; only there to judge blending. */
+.host{width:760px;padding:14px 18px 12px;border-radius:15px;border:1px solid var(--line);background:var(--bg);color:var(--text);font:11px/1.4 "Segoe UI","Microsoft YaHei",sans-serif}
+.host.dark{--bg:#151922;--line:#2b3140;--text:#d9deea;--muted:#8b93a6}.host.light{--bg:#f7f8fa;--line:#dde1e8;--text:#1d2230;--muted:#6b7385}
+.host-head{display:flex;justify-content:space-between;color:var(--muted);letter-spacing:.08em;font-size:8px}.host-head b{color:var(--text);letter-spacing:0;font-size:10px;margin-left:6px}
+.host-body{position:relative;height:300px;display:flex;align-items:center;justify-content:center}.host-labels{display:flex;justify-content:space-between;width:314px;margin:0 auto;color:var(--muted)}.host-note{color:var(--muted);margin-top:4px}
+.host .se-universe{width:314px;height:72px}.se-universe:before,.se-universe:after,.se-static-thumb{display:none!important}
+.debug{position:absolute;left:50%;top:50%;pointer-events:none}.frame{position:absolute;border:1px solid;pointer-events:none}.world{border-color:#ff3b3b}.view{border-color:#fff}.object{border-color:#3ba3ff}.object.outside{border-style:dashed}
+.tag{position:absolute;top:-15px;left:0;font:10px Consolas,monospace;white-space:nowrap}.world .tag{color:#ff6b6b}.view .tag{color:#fff;top:auto;bottom:-15px}.object .tag{color:#7cc3ff}
+.metrics{font:12px/1.8 Consolas,monospace;color:#becada;white-space:pre-wrap;margin-top:12px}
+</style><main><h1>世界 / 取景框 / 示例对象 · 调试演示</h1>
+<p>仅预览，不连接 DSH。<b style="color:#ff6b6b">红框</b> = 完整宇宙世界（固定）；<b>白框</b> = 当前取景框（可调，只裁剪不缩放）；<b style="color:#7cc3ff">蓝框</b> = 被跟踪的示例对象（在取景框外时为虚线）。调试边框只存在于本页，不进入正式 UI。背景是模拟的 DSH 弹窗，用来检查世界外缘渐隐。</p>
+<div class="controls"><label>档位视觉位置 <input id="position" type="range" min="0" max="1" step="0.001" value="1"><output id="position-value"></output></label><label><input id="pressed" type="checkbox">模拟按住</label><button id="pause">暂停</button></div>
+<div class="controls"><label>取景框宽 <input id="width" type="range" min="314" max="860" value="860"><output id="width-value"></output></label><label>取景框高 <input id="height" type="range" min="38" max="380" value="380"><output id="height-value"></output></label><label>取景框柔化 <input id="feather" type="range" min="0" max="32" value="8"><output id="feather-value"></output></label><button id="small">缩到最小</button><button id="large">扩到最大</button></div>
+<div class="controls">跟踪对象：<button id="track-meteor" aria-pressed="true">流星</button><button id="track-star">恒星</button><button id="track-cloud">星云</button><button id="launch">发射示例流星</button><span style="width:12px"></span><button id="debug" aria-pressed="true">调试边框</button><button id="fade" aria-pressed="true">世界外缘渐隐</button><button id="theme">宿主：深色</button><button id="scale">倍率 1×</button></div>
+<div class="scroller"><div class="zoom" id="zoom"><div class="host dark" id="host"><div class="host-head"><span>STELLAR EFFORT <b>星轨推理</b></span><span>Max</span></div><div class="host-body" id="body"></div><div class="host-labels"><span>Off</span><span>Low</span><span>High</span><span>Max</span></div><div class="host-note">松手后应用 · 下一次请求生效</div></div></div></div>
+<pre class="metrics" id="metrics"></pre>
+</main><script type="module" src="./viewport-debug.mjs"></script></html>

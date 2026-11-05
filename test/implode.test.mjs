@@ -1,0 +1,20 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {Evolution,LIMITS,chargeAt,visualState} from '../src/render/evolution.mjs';
+import {IMPLODE,swallowPoint} from '../src/render/implode.mjs';
+const run=(e,s)=>{for(let t=0;t<s;t+=1/60)e.step(1/60);};
+test('Max → High: the hole swallows the opened universe, then flashes back into the charged knob',()=>{const e=new Evolution(1);e.begin(1);e.input(.9);e.input(2/3);assert.equal(e.phase,'implode');e.release();e.sync(2/3);assert.equal(e.phase,'implode','the release snap does not cut the swallow short');
+  const seen=[];for(let t=0;t<IMPLODE.seconds+.2;t+=1/60){e.step(1/60);seen.push(e.visual());}
+  const at=f=>seen[Math.min(seen.length-1,Math.round(f*IMPLODE.seconds*60))];
+  assert.ok(at(.1).unfold>.8&&at(.5).unfold<at(.1).unfold&&at(.79).unfold<.05,'the opened space shrinks into the knob');
+  for(let i=1;i<seen.length&&seen[i].followKnob;i++)assert.ok(seen[i].swallow>=seen[i-1].swallow-1e-12,'swallow only grows');
+  assert.equal(at(.5).holeVisibility,1,'the hole stays while it swallows');assert.ok(at(.5).followKnob);
+  assert.ok(Math.max(...seen.map(v=>v.coreFlare))>.8,'flash as the knob is reborn');
+  assert.equal(e.phase,'energy');assert.equal(e.visual().holeVisibility,0);assert.ok(Math.abs(e.visual().charge-chargeAt(2/3))<1e-9,'back to the charged High knob');});
+test('going back up past the boom limit while swallowing opens the space again; quick jitter elsewhere is unchanged',()=>{const e=new Evolution(1);e.begin(1);e.input(.78);assert.equal(e.phase,'implode');run(e,.2);e.input(.9);assert.equal(e.phase,'returning');run(e,1);assert.equal(e.visual().unfold,1);});
+test('the knob charges from Low to High and peaks at the critical point; none once the hole exists',()=>{assert.equal(chargeAt(1/3),0);assert.ok(chargeAt(.55)>.2&&chargeAt(.55)<chargeAt(2/3));assert.ok(chargeAt(2/3)>.79&&chargeAt(LIMITS.collapse)>.999);
+  const e=new Evolution(2/3);assert.ok(e.visual().charge>.79);const born=new Evolution(1);assert.equal(born.visual().charge,0);
+  const c=new Evolution(.6);c.begin(1);c.input(LIMITS.collapse+.01);assert.equal(c.phase,'collapse');assert.ok(c.visual().charge>.99,'full charge as the collapse starts');run(c,.15);assert.ok(c.visual().charge<.05,'swallowed when the pit opens');
+  assert.ok(visualState({position:.6}).charge>0);});
+test('swallowed points are drawn closer to the knob and turned around it, closer ones turned more',()=>{const k={x:571,y:190};assert.deepEqual(swallowPoint({x:700,y:190},k,0),{x:700,y:190});const far=swallowPoint({x:800,y:190},k,.6),near=swallowPoint({x:620,y:190},k,.6);
+  assert.ok(Math.hypot(far.x-k.x,far.y-k.y)<229*.5&&Math.hypot(near.x-k.x,near.y-k.y)<49*.5);assert.ok(Math.abs(Math.atan2(near.y-k.y,near.x-k.x))>Math.abs(Math.atan2(far.y-k.y,far.x-k.x)));});
+test('a change from elsewhere (DSH menu) from Max to High plays the same swallow',()=>{const e=new Evolution(1);run(e,.1);e.sync(2/3);assert.equal(e.phase,'implode');run(e,IMPLODE.seconds+.1);assert.equal(e.phase,'energy');const f=new Evolution(1/3);f.sync(0);assert.equal(f.phase,'returning');});
