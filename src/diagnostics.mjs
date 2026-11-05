@@ -11,5 +11,5 @@ export class Diagnostics {
   update(id, value) { this.renderers.set(id, value); }
   remove(id) { this.renderers.delete(id); }
   clear() { this.events = []; }
-  report() { return { plugin: 'dsh-stellar-effort', version: '1.1.5', time: new Date().toISOString(), renderers: [...this.renderers.values()], events: [...this.events], privacy: '仅本地内存摘要，无聊天、凭据、会话标识或遥测上传' }; }
+  report() { return { plugin: 'dsh-stellar-effort', version: '1.1.6', time: new Date().toISOString(), renderers: [...this.renderers.values()], events: [...this.events], privacy: '仅本地内存摘要，无聊天、凭据、会话标识或遥测上传' }; }
 }

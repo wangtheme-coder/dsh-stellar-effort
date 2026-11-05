@@ -4,7 +4,7 @@ import { ConfigRepository } from './storage.mjs';
 
 export const name = 'dsh-stellar-effort';
 export const inject = ['webServer', 'connection'];
-export const VERSION = '1.1.5';
+export const VERSION = '1.1.6';
 
 export function json(response, status, value) {
   const body = JSON.stringify(value);

@@ -1,7 +1,7 @@
 {
   "name": "dsh-stellar-effort",
-  "version": "1.1.5",
-  "generated": "2026-11-05T10:05:57.047Z",
+  "version": "1.1.6",
+  "generated": "2026-11-05T10:26:29.434Z",
   "files": [
     {
       "path": "ASSETS_CREDITS.md",
@@ -15,13 +15,13 @@
     },
     {
       "path": "dist/client.js",
-      "bytes": 565653,
-      "sha256": "cac98a445cc4d850b2e32f8a27e8e1a3baeeaf95e83723fe050c40ae832be263"
+      "bytes": 565902,
+      "sha256": "ef19c3442d737d577d52bf70bfd397a8876704c487d8d619d1c5907fb8a8ea05"
     },
     {
       "path": "dist/preview.js",
-      "bytes": 631359,
-      "sha256": "18a802c208172438cc56e9e11d87dd8ffc92bc8682fc5b1308ec3d7a6943f8a7"
+      "bytes": 631534,
+      "sha256": "1073142976e43a38bb07e68a00ead54138f0dc303b32df228503a7038df736b8"
     },
     {
       "path": "install.cmd",
@@ -36,17 +36,17 @@
     {
       "path": "package.json",
       "bytes": 1948,
-      "sha256": "8914755b128f180afa47bc3863475ebe5e24c93cbc755a09d82b408ff2753acd"
+      "sha256": "4d2fbd92e25156aa0594988130abf2c0890cc98d1a67aca978cd81321f4c6a1b"
     },
     {
       "path": "README.md",
-      "bytes": 5072,
-      "sha256": "6c1a4f45d226ab9c56b1acc0af61838bc1312d372d17d71cb7bd64bae28c3b81"
+      "bytes": 5212,
+      "sha256": "80a848397664f0be549cd30141deff480141303d9932cd2e3843cb097c52abad"
     },
     {
       "path": "scripts/browser-qa.mjs",
-      "bytes": 14088,
-      "sha256": "b8653a063fdc34f29eb2dcead0cc65367086095c2335c3ea737e92c2ce0de7ec"
+      "bytes": 15343,
+      "sha256": "81b39f480316c2fe08f9b9045feb1fec06f05deace19b77de799dbbf320579e9"
     },
     {
       "path": "scripts/build-photo-atlas.mjs",
@@ -56,7 +56,7 @@
     {
       "path": "scripts/build.mjs",
       "bytes": 1299,
-      "sha256": "c79a8acb1f0aa3d7ac624a97fe7064c4e68a30be53d5f92ce6cf18e5c0c58135"
+      "sha256": "96cf39a4d70c07cc215cbb029b9ecf029ad53f163740f3fb9c5f80bba33b2560"
     },
     {
       "path": "scripts/check.mjs",
@@ -111,12 +111,12 @@
     {
       "path": "src/diagnostics.mjs",
       "bytes": 1048,
-      "sha256": "d8aa80794fc8a23ffc43a7033707d785fc077637ce9493cdbe04a1a7d12c9ad6"
+      "sha256": "5116624992afcfdef0d07af6623ccf6c27ffd69e46c86e3e3d1a132363274f0b"
     },
     {
       "path": "src/host.mjs",
       "bytes": 3405,
-      "sha256": "544b6133cdd890805e73648c9bcc578fc1b4026661f91b436169cf91fc756e38"
+      "sha256": "725fbb565eb56300c9708b3934f25a8f95bee3bf6771bacdbd1ee0125cfe87f2"
     },
     {
       "path": "src/preferences.mjs",
@@ -305,8 +305,8 @@
     },
     {
       "path": "src/ui.jsx",
-      "bytes": 48171,
-      "sha256": "a1518bfc4f3ecf9472a454ecfe4538e22641e8f0db946577c2321c002bdeb728"
+      "bytes": 48547,
+      "sha256": "9cd15e9a2c054fc078183e3e15b8b89edb1e59b6e7a6be222cf9ae6770ee8b61"
     },
     {
       "path": "THIRD_PARTY_NOTICES.md",
